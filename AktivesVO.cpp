@@ -12,7 +12,7 @@ AktivesVO::AktivesVO(string sName)
 {
 	vInitialisierung();
 
-	p_sName = sName;
+	this->p_sName = sName;
 }
 
 //Konstruktor mit lokaler Zeit fehlt noch
@@ -30,15 +30,6 @@ void AktivesVO::vInitialisierung()
 	p_iMaxID++;
 }
 
-
-//Ausgabe von allen in AktivesVO gespeicherten Attributen
-void AktivesVO::vAusgabe()
-{
-	cout << setw(4) << resetiosflags(ios::right) << setiosflags(ios::left) << setfill(' ')
-		<< p_iID << setw(9) << setfill(' ') << p_sName << ":" << resetiosflags(ios::left) << setiosflags(ios::right)
-		<< setw(8) << setfill(' ');
-}
-
 //nicht definiert, weil rein virtuelle Funktion. Definition in Unterklassen
 /*void AktivesVO::vAbfertigung()
 {
@@ -54,8 +45,13 @@ ostream& operator << (ostream& daten, AktivesVO& VO)
 ostream& AktivesVO::ostreamAusgabe(ostream& daten)
 {
 	daten << setw(4) << resetiosflags(ios::right) << setiosflags(ios::left) << setfill(' ')
-		<< p_iID << setw(9) << setfill(' ') << p_sName << ":" << resetiosflags(ios::left) << setiosflags(ios::right)
-		<< setw(8) << setfill(' ');
+		<< p_iID << setw(9) << setfill(' ') << p_sName ;
 
 	return daten;
+}
+
+
+string AktivesVO::getName() const
+{
+	return this->p_sName;
 }

@@ -1,4 +1,6 @@
 #include "PKW.h"
+#include "FzgParken.h"
+#include "FzgFahren.h"
 
 
 //Standardkonstruktor
@@ -82,16 +84,12 @@ void PKW::vAbfertigung()
 	}
 }
 
-//Ergänzung der vAusgabe Funktion für PKWs, erst Ausgabe AktuellesVO, dann Fahrzeug und dann PKW
-void PKW::vAusgabe()
-{
-	Fahrzeug::vAusgabe();
-	cout << setw(17) << setfill(' ') << dVerbrauch() << setw(15) << setfill(' ') << p_dTankinhalt;
-}
 
 //Ausgabe der maximalen Gechwindigkeit als aktuelle Geschwindigkeit
 double PKW::dGeschwindigkeit()
 {
+	p_pVerhalten->getWeg()->iGetLimit();
+	
 	return p_dMaxGeschwindigkeit;
 }
 

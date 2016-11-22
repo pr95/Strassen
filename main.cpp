@@ -1,16 +1,23 @@
 #include "PKW.h"
 #include "Fahrrad.h"
+#include "Weg.h"
 #include <vector>
-#include "AktivesVO.h"
+
 
 //Uhr initialisieren (global)
 double dGlobaleZeit = 0.0;
+
+void vWegTabellenkopf()
+{
+	cout << setw(4) << resetiosflags(ios::right) << setiosflags(ios::left) << setfill(' ')
+		<< "ID" << setw(9) << setfill(' ') << "Name" << "Laenge  Fahrzeuge" << endl;
+}
 
 /*
 Funktion zum testen der Fahrzeug-Klasse.
 Erstellt Fahrzeuge, ruft die Ausgabe-Funktion auf und löscht alle Fahrzeuge wieder
 */
-void vAufgabe_1()
+/*void vAufgabe_1()
 {
 	//Statisch erzeugte Objekte
 	Fahrzeug tAuto1;
@@ -56,10 +63,10 @@ void vAufgabe_1()
 	//Löschen der dynamischen Objekte
 	delete pAuto4;	
 	delete pAuto3;
-}
+} */
 
 
-void vAufgabe_1_deb()
+/*void vAufgabe_1_deb()
 {
 	Fahrzeug* pFeld[4] = { new Fahrzeug("Rot", 40.0), new Fahrzeug("Blau", 25.0),
 							new Fahrzeug("Gruen", 30.0), new Fahrzeug("Gelb", 10.0) };
@@ -78,7 +85,7 @@ void vAufgabe_1_deb()
 		cout << endl;
 	}
 
-}
+}*/
 
 /*
 Funktion zum Testen von PKWs und Fahrräder. Zuerst wird die Anzahl jeweils eingelesen und danach dynamisch erzeugt und in einen Vektor gespeichert.
@@ -150,7 +157,7 @@ void vAufgabe_3()
 	PKW tempPKW2 = tempPKW1;
 
 	//Tabellenkopf
-	cout << endl << "ID  Name   :  MaxKmh  AktKmh   GesamtStrecke  GesamtVerbrauch  AktTankinhalt " << endl;
+	cout << endl << "ID  Name     :  MaxKmh  AktKmh   GesamtStrecke  GesamtVerbrauch  AktTankinhalt " << endl;
 	cout << setw(80) << setfill('+') << " " << endl;
 	
 	//Ausgabe der beiden Fahrzeuge
@@ -165,23 +172,57 @@ void vAufgabe_3()
 	cout << tempPKW1 << endl << endl;
 
 	//Vergleich der Gesamtstrecken von PKW1 und PKW2
-	//if (tempPKW1 < tempPKW2)
-	//{
-	//	cout << "PKW2 ist weiter gefahren als PKW1" << endl;
-	//}
-	//else
-	//{
-	//	cout << "PKW1 ist weiter gefahren als PKW2" << endl;
-	//}
+	if (tempPKW1 < tempPKW2)
+	{
+		cout << "PKW2 ist weiter gefahren als PKW1" << endl;
+	}
+	else
+	{
+		cout << "PKW1 ist weiter gefahren als PKW2" << endl;
+	}
 
+}
+
+void vAufgabe_4()
+{
+	Weg* WegTest = new Weg("Weg1", 100);
+	PKW* BMW = new PKW("BMW", 200, 5);
+	PKW* Audi = new PKW("Audi", 200, 5);
+	PKW* Parki = new PKW("Parki", 50, 5);
+	
+	WegTest->vAnnahme(BMW);
+	WegTest->vAnnahme(Audi);
+	WegTest->vAnnahme(Parki, 2.0);
+
+	vWegTabellenkopf();
+	cout << *WegTest << endl;
+
+	//Tabellenkopf
+	cout << endl << "ID  Name     :  MaxKmh  AktKmh   GesamtStrecke AbschnittStrecke GesamtVerbrauch  AktTankinhalt " << endl;
+	cout << setw(80) << setfill('+') << " " << endl;
+
+	while (dGlobaleZeit < 4)
+	{
+		cout << "Nach " << dGlobaleZeit << "h:" << endl;
+		cout << *BMW << endl << *Audi << endl << *Parki << endl << endl;
+		WegTest->vAbfertigung();
+
+		dGlobaleZeit += gZeitschritt;
+	}
+	
+
+
+
+	getchar();
 }
 
 int main()
 {
-	vAufgabe_1();
+	//vAufgabe_1();
 	//vAufgabe_1_deb();
 	//vAufgabe_2();
 	//vAufgabe_3();
+	vAufgabe_4();
 	return 0;
 }
 

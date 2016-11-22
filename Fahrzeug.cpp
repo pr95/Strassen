@@ -1,4 +1,7 @@
 #include "Fahrzeug.h"
+#include "Weg.h"
+#include "FzgFahren.h"
+#include "FzgParken.h"
 
 
 //Standardkonstruktor, Name und ID von AktivesVo, rest durch eigene Initialisierung
@@ -16,7 +19,7 @@ Fahrzeug::Fahrzeug(string sName): AktivesVO(sName)
 //Konstruktor mit Name und MaxGeschwindigkeit
 Fahrzeug::Fahrzeug(string sName, double dMaxGeschwindigkeit) :AktivesVO(sName)
 {
-	vInitialisierung();
+	Fahrzeug::vInitialisierung();
 	p_dMaxGeschwindigkeit = dMaxGeschwindigkeit;
 
 }
@@ -42,18 +45,10 @@ Funktion zur Initialisierung von allen Attributen und Vergabe der ID.
 */
 void Fahrzeug::vInitialisierung()
 {
-	p_dGesamtStrecke = 0;
+	p_dGesamtStrecke = 0.0;
 	p_dMaxGeschwindigkeit = 0.00;
-
-}
-
-/*
-Ausgabe der Objektdaten in formatierter Form
-*/
-void Fahrzeug::vAusgabe()
-{
-	AktivesVO::vAusgabe();
-	cout << p_dMaxGeschwindigkeit << setw(8) << setfill(' ') << this->dGeschwindigkeit() << setw(11) << setfill(' ') << p_dGesamtStrecke;
+	p_dAbschnittStrecke = 0.0;
+	p_pVerhalten = 0;
 }
 
 /*
@@ -69,7 +64,10 @@ void Fahrzeug::vAbfertigung()
 	}
 	else
 	{
-		p_dGesamtStrecke += gZeitschritt * this->dGeschwindigkeit();
+		//p_dGesamtStrecke += gZeitschritt * this->dGeschwindigkeit();
+		double tempStrecke = p_pVerhalten->dStrecke(this, gZeitschritt);
+		p_dAbschnittStrecke += tempStrecke;
+		p_dGesamtStrecke += tempStrecke;
 	}
 	
 	p_dZeit = dGlobaleZeit;
@@ -87,6 +85,21 @@ double Fahrzeug::dGeschwindigkeit()
 	return p_dMaxGeschwindigkeit;
 }
 
+//Erzeugt beim Start eines neuen Weges ein FzgVerhalten-Objekt und speichert dies in p_pVerhalten
+void Fahrzeug::vNeueStrecke(Weg* pWeg)
+{
+	delete p_pVerhalten;
+	FzgFahren* tempObj = new FzgFahren(pWeg);
+	p_pVerhalten = tempObj;
+}
+
+void Fahrzeug::vNeueStrecke(Weg* pWeg, double dStartzeit)
+{
+	delete p_pVerhalten;
+	FzgParken* tempObj = new FzgParken(pWeg, dStartzeit);
+	p_pVerhalten = tempObj;
+}
+
 //Überladung von <<
 ostream& operator << (ostream& daten, Fahrzeug& fahrzeug)
 {
@@ -96,7 +109,9 @@ ostream& operator << (ostream& daten, Fahrzeug& fahrzeug)
 //Aufbau der Fahrzeugausgabe mit ostream
 ostream& Fahrzeug::ostreamAusgabe(ostream& daten)
 {
-	AktivesVO::ostreamAusgabe(daten) <<p_dMaxGeschwindigkeit << setw(8) << setfill(' ') << dGeschwindigkeit() << setw(11) << setfill(' ') << p_dGesamtStrecke;
+	AktivesVO::ostreamAusgabe(daten) << ":" << resetiosflags(ios::left) << setiosflags(ios::right)
+		<< setw(8) << setfill(' ') << p_dMaxGeschwindigkeit << setw(8) << setfill(' ') << dGeschwindigkeit() << setw(11) << setfill(' ') << p_dGesamtStrecke
+		<< setw(11) << setfill(' ') << p_dAbschnittStrecke;
 
 	return daten;
 }
@@ -119,4 +134,14 @@ Fahrzeug& Fahrzeug::operator =(Fahrzeug& fahrzeug)
 	Fahrzeug::Fahrzeug(fahrzeug);
 
 	return *this;
+}
+
+FzgVerhalten* Fahrzeug::getVerhalten() const
+{
+	return p_pVerhalten;
+}
+
+double Fahrzeug::getAbschnittStrecke() const
+{
+	return p_dAbschnittStrecke;
 }

@@ -21,7 +21,6 @@ public:
 	~PKW();
 
 	//Methoden
-	void vAusgabe();
 	void vAbfertigung();
 
 	//Überladung

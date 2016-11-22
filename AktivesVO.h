@@ -2,8 +2,14 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include <list>
+#define gZeitschritt 0.5
+#define epsilon 0.0001
 
 using namespace std;
+class Weg;
+
+extern double dGlobaleZeit;
 
 class AktivesVO
 {
@@ -14,13 +20,15 @@ public:
 
 
 	//gemeinsam genutzte Methoden von Fahrzeug und Weg
-	virtual void vAusgabe();
 	virtual void vAbfertigung()=0;
 
 	//Überladung der Operatoren
 	virtual ostream& ostreamAusgabe(ostream&);
 	//bool operator <(AktivesVO&);
 	//virtual AktivesVO& operator =(AktivesVO&);
+
+	//Getter
+	virtual string getName() const;
 
 private:
 	static int p_iMaxID;
