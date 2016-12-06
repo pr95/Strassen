@@ -9,7 +9,7 @@ PKW::PKW() : Fahrzeug()
 }
 
 //Konstruktor mit allen Attributen
-PKW::PKW(string sName, double dMaxGeschwindigkeit, double dVerbrauch, double dTankvolumen):Fahrzeug(sName, dMaxGeschwindigkeit)
+PKW::PKW(string sName, double dMaxGeschwindigkeit, double dVerbrauch, double dTankvolumen, double dAbschnittStrecke):Fahrzeug(sName, dMaxGeschwindigkeit, dAbschnittStrecke)
 {
 	p_dVerbrauch = dVerbrauch/100;
 	p_dTankvolumen = dTankvolumen;
@@ -84,13 +84,27 @@ void PKW::vAbfertigung()
 	}
 }
 
+void PKW::vZeichnen(Weg* pWeg)
+{
+	double dRelPos = p_dAbschnittStrecke / (pWeg->dGetLaenge());
+	
+	bZeichnePKW(p_sName, pWeg->getName(), dRelPos+epsilon, dGeschwindigkeit(), p_dTankinhalt);
+}
+
 
 //Ausgabe der maximalen Gechwindigkeit als aktuelle Geschwindigkeit
 double PKW::dGeschwindigkeit()
 {
-	p_pVerhalten->getWeg()->iGetLimit();
-	
-	return p_dMaxGeschwindigkeit;
+	double d_StreckenGeschwindigkeit = p_pVerhalten->getSpeed();
+
+	if (d_StreckenGeschwindigkeit > p_dMaxGeschwindigkeit  || d_StreckenGeschwindigkeit < 0)
+	{
+		return p_dMaxGeschwindigkeit;
+	}
+	else
+	{
+		return d_StreckenGeschwindigkeit;
+	}
 }
 
 //Ergänzung der ostream Ausgabe für PKWs
@@ -107,3 +121,6 @@ PKW& PKW::operator =(PKW& fahrzeug)
 	
 		return PKW::PKW(fahrzeug); 
 }
+
+//zeichnen
+//bZeichnen(Namen, relativPos., 

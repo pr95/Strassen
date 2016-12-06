@@ -11,6 +11,7 @@ public:
 	~FzgParken();
 
 	double dStrecke(Fahrzeug*, double Zeitraum);
+	int getSpeed() const;
 
 private:
 	double p_dStartzeit;

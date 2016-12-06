@@ -2,6 +2,9 @@
 #include "Fahrrad.h"
 #include "Weg.h"
 #include <vector>
+#include "SimuClient.h"
+#include <stdlib.h>
+#include "LazyListe.h"
 
 
 //Uhr initialisieren (global)
@@ -185,14 +188,14 @@ void vAufgabe_3()
 
 void vAufgabe_4()
 {
-	Weg* WegTest = new Weg("Weg1", 100);
-	PKW* BMW = new PKW("BMW", 200, 5);
+	Weg* WegTest = new Weg("Weg1", 133, Innerorts);
+	PKW* BMW = new PKW("BMW", 10, 5);
 	PKW* Audi = new PKW("Audi", 200, 5);
 	PKW* Parki = new PKW("Parki", 50, 5);
 	
 	WegTest->vAnnahme(BMW);
 	WegTest->vAnnahme(Audi);
-	WegTest->vAnnahme(Parki, 2.0);
+	WegTest->vAnnahme(Parki, 3.0);
 
 	vWegTabellenkopf();
 	cout << *WegTest << endl;
@@ -216,13 +219,108 @@ void vAufgabe_4()
 	getchar();
 }
 
+void vAufgabe_5()
+{
+	Weg* WegHin = new Weg("A", 500, Autobahn);
+	Weg* WegRueck = new Weg("B", 500, Autobahn);
+
+	PKW* Audi = new PKW("Audi", 200, 5);
+	PKW* Parki = new PKW("Parki", 50, 5, 60, 250);
+
+	WegHin->vAnnahme(Audi);
+	WegRueck->vAnnahme(Parki, 1.0);
+
+	int Koordinaten[4] = { 700, 250, 100, 250 };
+	
+	bInitialisiereGrafik(800, 500);
+
+	bZeichneStrasse("A", "B", 500, 2, Koordinaten);
+	bZeichnePKW("Audi", "A", epsilon, 200, 50);
+	bZeichnePKW("Parki", "B", 0.5, 0, 60);
+
+	while (dGlobaleZeit < 4)
+	{
+		vSetzeZeit(dGlobaleZeit);
+		cout << "Nach " << dGlobaleZeit << "h" << endl;
+		WegHin->vAbfertigung();
+		WegRueck->vAbfertigung();
+
+		dGlobaleZeit += gZeitschritt;
+		vSleep(500);
+	}
+}
+
+void vAufgabe_6a()
+{
+	LazyListe<int> Liste;
+	LazyListe<int>::iterator itL;
+
+	//Initialisieren der Liste mti Random Integers
+	for (int i = 0; i < 20; i++)
+	{
+		int zahl = rand() % 10 + 1;
+		Liste.push_back(zahl);
+	}
+	
+	//Aktualisieren der Liste
+	Liste.vAktualisieren();
+	
+	cout << "Liste wurde Initialisiert:" << endl;
+	
+	//Erste Ausgabe der Liste
+	itL = Liste.begin();
+	while (itL != Liste.end())
+	{
+		cout << *itL << endl;
+		itL++;
+	}
+
+	cout << endl << "Löschen der Elemente >5" << endl;
+
+	//Löschen der Elemente >5
+	itL = Liste.begin();
+	while (itL != Liste.end())
+	{
+		if (*itL > 5)
+		{
+			Liste.erase(itL);
+		}
+		itL++;
+	}
+	
+	cout << "Die Liste ohne Aktualisierung:" << endl;
+
+	//Ausgabe der Liste ohne Aktualisierung
+	itL = Liste.begin();
+	while (itL != Liste.end())
+	{
+		cout << *itL << endl;
+		itL++;
+	}
+
+	Liste.vAktualisieren();
+
+	cout << endl << "Die Liste mit Aktualisierung:" << endl;
+
+	//Ausgabe der Liste mit Aktualisierung
+	itL = Liste.begin();
+	while (itL != Liste.end())
+	{
+		cout << *itL << endl;
+		itL++;
+	}
+
+}
+
 int main()
 {
 	//vAufgabe_1();
 	//vAufgabe_1_deb();
 	//vAufgabe_2();
 	//vAufgabe_3();
-	vAufgabe_4();
+	//vAufgabe_4();
+	//vAufgabe_5();
+	vAufgabe_6a();
 	return 0;
 }
 

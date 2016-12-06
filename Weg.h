@@ -3,25 +3,26 @@
 
 class Fahrzeug;
 typedef list<Fahrzeug*> ListFahrzeug;
+enum Begrenzung { Innerorts = 50, Landstraﬂe = 100, Autobahn = -1 }; //Innerorts, Landstraﬂe, Autobahn
 
 class Weg :
-	public AktivesVO
+	public AktivesVO	
+
 {
 //Anlegung von Aufz‰hlung Begrenzung zur Nutzung im Konstruktor
-private:
-	enum Begrenzung { Innerorts = 50, Landstraﬂe = 100, Autobahn = 0 }; //Innerorts, Landstraﬂe, Autobahn
-
 public:
 	Weg();
 	Weg(string sName, double dLaenge, Begrenzung eLimit = Innerorts);
 	~Weg();
 
-	double dGetLaenge() const;
+
 	void vAbfertigung();
 	void vAnnahme(Fahrzeug*);
 	void vAnnahme(Fahrzeug*, double);
+	void vAbgabe(Fahrzeug*);
 
-	int iGetLimit() const;
+	double dGetLaenge() const;
+	int iGetLimit();
 
 	ostream& ostreamAusgabe(ostream&);
 

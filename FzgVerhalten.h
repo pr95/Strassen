@@ -9,7 +9,7 @@ public:
 	~FzgVerhalten();
 
 	virtual double dStrecke(Fahrzeug*, double)=0;
-	virtual Weg* getWeg() const;
+	virtual int getSpeed() const = 0;
 
 protected:
 	Weg* p_pWeg;

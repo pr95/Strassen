@@ -1,5 +1,6 @@
 #include "FzgParken.h"
 #include "Weg.h"
+#include "Losfahren.h"
 
 
 
@@ -16,15 +17,22 @@ FzgParken::~FzgParken()
 {
 }
 
-double FzgParken::dStrecke(Fahrzeug*, double Zeitraum)
+//Lässt das Fahrzeug erst abfahren, wenn die Startzeit erreicht wurde
+double FzgParken::dStrecke(Fahrzeug* fFahrzeug, double Zeitraum)
 {
-	if (p_dStartzeit > dGlobaleZeit)
+	//Wenn Startzeit erreicht wird, springt es in die exception
+	if (p_dStartzeit-dGlobaleZeit>epsilon)
 	{
 		return 0.0;
 	}
 	else
 	{
-		cout << "Die Startzeit wurde erreicht, das Programm wird beendet." << endl;
-		exit(2);
+		throw new Losfahren(fFahrzeug, p_pWeg);
 	}
+}
+
+//Gibt 0 als aktuelle Geschwindigkeit zurück
+int FzgParken::getSpeed() const
+{
+	return 0;
 }

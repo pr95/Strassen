@@ -2,7 +2,6 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include <math.h>
 #include "AktivesVO.h"
 
 class FzgVerhalten;
@@ -16,7 +15,7 @@ public:
 	//Konstruktoren
 	Fahrzeug();
 	Fahrzeug(string);			//Mit Name
-	Fahrzeug(string, double);	//Mit Name und MaxGeschwindigkeit
+	Fahrzeug(string, double, double=0);	//Mit Name und MaxGeschwindigkeit und AbschnittStrecke
 	
 	//Copyconstruktor
 	Fahrzeug(const Fahrzeug&);
@@ -30,6 +29,7 @@ public:
 	virtual double dGeschwindigkeit();
 	virtual void vNeueStrecke(Weg*);				//Fahrendes Fahrzeug
 	virtual void vNeueStrecke(Weg*, double);		//Parkendes Fahrzeug
+	virtual void vZeichnen(Weg*);
 	
 	//Überladung von Operatoren
 	virtual ostream& ostreamAusgabe(ostream&);

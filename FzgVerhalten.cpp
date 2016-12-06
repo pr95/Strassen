@@ -12,8 +12,3 @@ FzgVerhalten::FzgVerhalten(Weg* pWeg)
 FzgVerhalten::~FzgVerhalten()
 {
 }
-
-Weg* FzgVerhalten::getWeg() const
-{
-	return p_pWeg;
-}

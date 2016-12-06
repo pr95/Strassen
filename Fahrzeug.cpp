@@ -17,10 +17,11 @@ Fahrzeug::Fahrzeug(string sName): AktivesVO(sName)
 }
 
 //Konstruktor mit Name und MaxGeschwindigkeit
-Fahrzeug::Fahrzeug(string sName, double dMaxGeschwindigkeit) :AktivesVO(sName)
+Fahrzeug::Fahrzeug(string sName, double dMaxGeschwindigkeit, double dAbschnittStrecke) :AktivesVO(sName)
 {
 	Fahrzeug::vInitialisierung();
 	p_dMaxGeschwindigkeit = dMaxGeschwindigkeit;
+	p_dAbschnittStrecke = dAbschnittStrecke;
 
 }
 
@@ -47,7 +48,6 @@ void Fahrzeug::vInitialisierung()
 {
 	p_dGesamtStrecke = 0.0;
 	p_dMaxGeschwindigkeit = 0.00;
-	p_dAbschnittStrecke = 0.0;
 	p_pVerhalten = 0;
 }
 
@@ -71,6 +71,7 @@ void Fahrzeug::vAbfertigung()
 	}
 	
 	p_dZeit = dGlobaleZeit;
+	//zeichen
 }
 
 //Default Funktion für alle Tochterklassen
@@ -86,6 +87,7 @@ double Fahrzeug::dGeschwindigkeit()
 }
 
 //Erzeugt beim Start eines neuen Weges ein FzgVerhalten-Objekt und speichert dies in p_pVerhalten
+//Fahrendes Fahrzeug
 void Fahrzeug::vNeueStrecke(Weg* pWeg)
 {
 	delete p_pVerhalten;
@@ -93,11 +95,16 @@ void Fahrzeug::vNeueStrecke(Weg* pWeg)
 	p_pVerhalten = tempObj;
 }
 
+//Parkendes Fahrzeug
 void Fahrzeug::vNeueStrecke(Weg* pWeg, double dStartzeit)
 {
 	delete p_pVerhalten;
 	FzgParken* tempObj = new FzgParken(pWeg, dStartzeit);
 	p_pVerhalten = tempObj;
+}
+
+void Fahrzeug::vZeichnen(Weg *)
+{
 }
 
 //Überladung von <<

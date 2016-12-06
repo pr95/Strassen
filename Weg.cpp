@@ -1,5 +1,6 @@
 #include "Weg.h"
 #include "Fahrzeug.h"
+#include "FahrAusnahme.h"
 
 //Standardkonstruktor
 Weg::Weg()
@@ -11,7 +12,7 @@ Weg::Weg(string sName, double dLaenge, Begrenzung eLimit) :AktivesVO(sName)
 {
 	p_dLaenge = dLaenge;
 	p_eLimit = eLimit;
-}
+} 
 
 //Destruktor
 Weg::~Weg()
@@ -32,7 +33,16 @@ void Weg::vAbfertigung()
 
 	while (p_pFahrzeuge.end() != itL)
 	{
-		(*itL)->vAbfertigung();
+		try
+		{
+			(*itL)->vAbfertigung();
+			(*itL)->vZeichnen(this);
+			
+		}
+		catch (FahrAusnahme *pAusnahme)
+		{
+			pAusnahme->vBearbeiten();
+		}
 		itL++;
 	}
 }
@@ -47,10 +57,26 @@ void Weg::vAnnahme(Fahrzeug* pFzg)
 //Nimmt neue PARKENDE Fahrzeuge auf den Weg auf
 void Weg::vAnnahme(Fahrzeug* pFzg, double dStartzeit)
 {
-	p_pFahrzeuge.push_back(pFzg);
+	p_pFahrzeuge.push_front(pFzg);
 	pFzg->vNeueStrecke(this, dStartzeit);
 }
 
+
+//Entfernt ein Fahrzeug aus der Liste
+void Weg::vAbgabe(Fahrzeug* pFzg)
+{
+	ListFahrzeug::iterator itL;
+	itL = p_pFahrzeuge.begin();
+	int i = 0;
+	
+	while (p_pFahrzeuge.end() != itL)
+	{
+		if ((*itL) == pFzg)
+		{
+			p_pFahrzeuge.remove(*itL);
+		}
+	}
+}
 
 //Ausgabe des Weges und der darauf befindlichen Fahrzeuge
 ostream& Weg::ostreamAusgabe(ostream& daten)
@@ -72,7 +98,8 @@ ostream& Weg::ostreamAusgabe(ostream& daten)
 }
 
 //Gibt das Limit des Weges aus
-int Weg::iGetLimit() const
+int Weg::iGetLimit()
 {
 	return p_eLimit;
 }
+

@@ -3,7 +3,9 @@
 #include <iostream>
 #include <iomanip>
 #include <list>
-#define gZeitschritt 0.5
+#include <math.h>
+#include "SimuClient.h"
+#define gZeitschritt 0.3
 #define epsilon 0.0001
 
 using namespace std;

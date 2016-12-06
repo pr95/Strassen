@@ -12,7 +12,7 @@ class PKW :
 public:
 	//Konstruktoren
 	PKW();
-	PKW(string, double, double, double dTankvolumen = 55); //Mit Namen, MaxGeschwindigkeit, Verbrauch und Tankvolumen
+	PKW(string, double, double, double dTankvolumen = 55, double = 0); //Mit Namen, MaxGeschwindigkeit, Verbrauch und Tankvolumen und AbschnittStrecke
 	
 	//Copykonstruktor
 	PKW(const PKW&); 
@@ -22,6 +22,7 @@ public:
 
 	//Methoden
 	void vAbfertigung();
+	void vZeichnen(Weg*);
 
 	//Überladung
 	ostream& ostreamAusgabe(ostream&);

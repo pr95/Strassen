@@ -10,5 +10,6 @@ public:
 	~FzgFahren();
 
 	double dStrecke(Fahrzeug*, double Zeitraum);
+	int getSpeed() const;
 };
 
